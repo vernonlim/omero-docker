@@ -23,6 +23,8 @@ services:
       CONFIG_omero_db_pass: omero
       CONFIG_omero_db_name: omero
       ROOTPASS: omero
+      CONFIG_omero_jvmcfg_percent_blitz: 50
+      CONFIG_Ice_MessageSizeMax: 1000000
     networks:
       - omero
     ports:
