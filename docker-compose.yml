@@ -43,6 +43,12 @@ services:
     image: "openmicroscopy/omero-web-standalone:5"
     environment:
       OMEROHOST: omeroserver
+      CONFIG_omero_web_public_enabled: true
+      CONFIG_omero_web_public_user: nottingham
+      CONFIG_omero_web_public_password: nottingham
+      CONFIG_omero_web_public_get__only: true
+      CONFIG_omero_web_public_server__id: 1
+      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api)'
     networks:
       - omero
     ports:
