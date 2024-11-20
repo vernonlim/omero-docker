@@ -48,11 +48,14 @@ services:
       CONFIG_omero_web_public_password: nottingham
       CONFIG_omero_web_public_get__only: true
       CONFIG_omero_web_public_server__id: 1
-      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api)'
+      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_simple_webapp)'
     networks:
       - omero
     ports:
       - "4080:4080"
+    volumes:
+      - "/srv/SEGP/omero-simple-webapp/omero_simple_webapp:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_simple_webapp:ro"
+      - "/srv/SEGP/omero-simple-webapp/config.omero:/opt/omero/web/config/config.omero:ro"
 
 networks:
   omero:
