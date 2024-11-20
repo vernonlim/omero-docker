@@ -57,9 +57,9 @@ services:
     ports:
       - "4080:4080"
     volumes:
-      - "/srv/SEGP/omero-simple-webapp/omero_simple_webapp:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_simple_webapp:ro"
-      - "/srv/SEGP/omero-webapp-two/omero_webapp_two:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_webapp_two:ro"
-      - "/srv/SEGP/omero-simple-webapp/config.omero:/opt/omero/web/config/config.omero:ro"
+      - "../omero-simple-webapp/omero_simple_webapp:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_simple_webapp:ro"
+      - "../omero-webapp-two/omero_webapp_two:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_webapp_two:ro"
+      - "../omero-simple-webapp/config.omero:/opt/omero/web/config/config.omero:ro"
 
 networks:
   omero:
