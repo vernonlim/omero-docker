@@ -3,6 +3,7 @@ version: "3"
 services:
 
   database:
+    container_name: omero-database
     image: "postgres:14"
     environment:
       POSTGRES_USER: omero
@@ -16,6 +17,7 @@ services:
   omeroserver:
     # This container uses the tag for the latest server release of OMERO 5
     # To upgrade to the next major release, increment the major version number
+    container_name: omero-server
     image: "openmicroscopy/omero-server:5"
     environment:
       CONFIG_omero_db_host: database
@@ -40,6 +42,7 @@ services:
   omeroweb:
     # This container uses the tag for the latest web release of OMERO 5
     # To upgrade to the next major release, increment the major version number
+    container_name: omero-web-standalone
     image: "openmicroscopy/omero-web-standalone:5"
     environment:
       OMEROHOST: omeroserver
@@ -48,13 +51,14 @@ services:
       CONFIG_omero_web_public_password: nottingham
       CONFIG_omero_web_public_get__only: true
       CONFIG_omero_web_public_server__id: 1
-      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_simple_webapp)'
+      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_simple_webapp|omero_webapp_two)'
     networks:
       - omero
     ports:
       - "4080:4080"
     volumes:
       - "/srv/SEGP/omero-simple-webapp/omero_simple_webapp:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_simple_webapp:ro"
+      - "/srv/SEGP/omero-webapp-two/omero_webapp_two:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_webapp_two:ro"
       - "/srv/SEGP/omero-simple-webapp/config.omero:/opt/omero/web/config/config.omero:ro"
 
 networks:
