@@ -13,7 +13,7 @@ config set omero.web.debug True
 config append omero.web.apps '"corsheaders"'
 config append omero.web.middleware '{"index": 0.5, "class": "corsheaders.middleware.CorsMiddleware"}'
 config append omero.web.middleware '{"index": 10, "class": "corsheaders.middleware.CorsPostCsrfMiddleware"}'
-# config set omero.web.cors_origin_allow_all True
+config set omero.web.cors_origin_allow_all True
 
 config append omero.web.apps '"omero_crm_landing_page"'
 config append omero.web.ui.top_links '["Landing Page", "omero_crm_landing_page_index", {"title": "Open Landing Page in new tab", "target": "_blank"}]'

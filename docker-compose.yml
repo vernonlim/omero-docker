@@ -43,8 +43,8 @@ services:
     # This container uses the tag for the latest web release of OMERO 5
     # To upgrade to the next major release, increment the major version number
     container_name: omero-web-standalone
-    # image: "openmicroscopy/omero-web-standalone:5"
-    build: https://github.com/vernonlim/omero-web-docker.git#master:standalone
+    image: "openmicroscopy/omero-web-standalone:5"
+    # build: https://github.com/vernonlim/omero-web-docker.git#master:standalone
     environment:
       OMEROHOST: omeroserver
       CONFIG_omero_web_public_enabled: true
@@ -63,23 +63,22 @@ services:
     # expose:
     #   - "4080"
     volumes:
-      # - "../omero-crm-landing-page/omero-crm-landing-page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
+      - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
       - "./config.omero:/opt/omero/web/config/config.omero:ro"
-      - "../omero_crm_landing_page:/sites/omero_crm_landing_page:ro"
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    volumes:
-      - ../nginx/reverse_proxy.conf:/etc/nginx/nginx.conf
-      - ../nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
-      - ../nginx/vernonlim.dev.pem:/etc/nginx/cert/vernonlim.dev.pem
-      - ../nginx/vernonlim.dev.key:/etc/nginx/cert/vernonlim.dev.key
-    networks:
-      - omero
-    ports:
-      - 80:80
-      - 443:443
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   volumes:
+  #     - ../nginx/reverse_proxy.conf:/etc/nginx/nginx.conf
+  #     - ../nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
+  #     - ../nginx/vernonlim.dev.pem:/etc/nginx/cert/vernonlim.dev.pem
+  #     - ../nginx/vernonlim.dev.key:/etc/nginx/cert/vernonlim.dev.key
+  #   networks:
+  #     - omero
+  #   ports:
+  #     - 80:80
+  #     - 443:443
 
 networks:
   omero:
