@@ -51,7 +51,8 @@ services:
       CONFIG_omero_web_public_password: nottingham
       CONFIG_omero_web_public_get__only: true
       CONFIG_omero_web_public_server__id: 1
-      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_simple_webapp|omero_webapp_two)'
+      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_crm_landing_page)'
+      CONFIG_omero_web_csrf__trusted__origins: '["https://omero.vernonlim.dev", "https://vernonlim.dev"]'
     networks:
       omero:
         aliases:
@@ -61,9 +62,8 @@ services:
     # expose:
     #   - "4080"
     volumes:
-      - "../omero-simple-webapp/omero_simple_webapp:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_simple_webapp:ro"
-      - "../omero-webapp-two/omero_webapp_two:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_webapp_two:ro"
-      - "../omero-simple-webapp/config.omero:/opt/omero/web/config/config.omero:ro"
+      - "../omero-crm-landing-page/omero-crm-landing-page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
+      - "./config.omero:/opt/omero/web/config/config.omero:ro"
 
   nginx:
     image: nginx:latest
