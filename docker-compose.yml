@@ -43,8 +43,11 @@ services:
     # This container uses the tag for the latest web release of OMERO 5
     # To upgrade to the next major release, increment the major version number
     container_name: omero-web-standalone
-    image: "openmicroscopy/omero-web-standalone:5"
+    # image: "openmicroscopy/omero-web-standalone:5"
     # build: https://github.com/vernonlim/omero-web-docker.git#master:standalone
+    build:
+      context: ../omero-web-docker/standalone
+      dockerfile: ./Dockerfile
     environment:
       OMEROHOST: omeroserver
       CONFIG_omero_web_public_enabled: true
@@ -52,8 +55,20 @@ services:
       CONFIG_omero_web_public_password: nottingham
       CONFIG_omero_web_public_get__only: true
       CONFIG_omero_web_public_server__id: 1
-      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_crm_landing_page)'
+      CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_crm_landing_page|gallery)'
       CONFIG_omero_web_csrf__trusted__origins: '["https://omero.vernonlim.dev", "https://vernonlim.dev"]'
+      CONFIG_omero_web_gallery_category__queries: > 
+        {
+          "all": {
+            "label": "All Studies", 
+            "index": 0, 
+            "query": "FIRST50:Name"
+          }
+        }
+      CONFIG_omero_web_gallery_filter__keys: >
+        [
+          "Name"
+        ]
     networks:
       omero:
         aliases:
@@ -63,22 +78,23 @@ services:
     # expose:
     #   - "4080"
     volumes:
-      - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
+      # - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
+      # - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib64/python3.9/site-packages/omero_crm_landing_page:ro"
       - "./config.omero:/opt/omero/web/config/config.omero:ro"
 
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: nginx
-  #   volumes:
-  #     - ../nginx/reverse_proxy.conf:/etc/nginx/nginx.conf
-  #     - ../nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
-  #     - ../nginx/vernonlim.dev.pem:/etc/nginx/cert/vernonlim.dev.pem
-  #     - ../nginx/vernonlim.dev.key:/etc/nginx/cert/vernonlim.dev.key
-  #   networks:
-  #     - omero
-  #   ports:
-  #     - 80:80
-  #     - 443:443
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ../nginx/reverse_proxy.conf:/etc/nginx/nginx.conf
+      - ../nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/vernonlim.dev.pem:/etc/nginx/cert/vernonlim.dev.pem
+      - ../nginx/vernonlim.dev.key:/etc/nginx/cert/vernonlim.dev.key
+    networks:
+      - omero
+    ports:
+      - 80:80
+      - 443:443
 
 networks:
   omero:
