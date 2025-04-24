@@ -34,6 +34,7 @@ services:
       - "4064:4064"
     volumes:
       - "omero:/OMERO"
+      - "../Data:/OMERO/Data:ro"
     ulimits:
       nofile:
         soft: 8192
@@ -57,18 +58,6 @@ services:
       CONFIG_omero_web_public_server__id: 1
       CONFIG_omero_web_public_url__filter: '^/(webadmin/myphoto/|webclient/(?!(script_ui|ome_tiff|figure_script))|webgateway/(?!(archived_files|download_as))|iviewer|api|omero_crm_landing_page|gallery)'
       CONFIG_omero_web_csrf__trusted__origins: '["https://omero.vernonlim.dev", "https://vernonlim.dev"]'
-      CONFIG_omero_web_gallery_category__queries: > 
-        {
-          "all": {
-            "label": "All Studies", 
-            "index": 0, 
-            "query": "FIRST50:Name"
-          }
-        }
-      CONFIG_omero_web_gallery_filter__keys: >
-        [
-          "Name"
-        ]
     networks:
       omero:
         aliases:
@@ -78,8 +67,8 @@ services:
     # expose:
     #   - "4080"
     volumes:
-      # - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
-      # - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib64/python3.9/site-packages/omero_crm_landing_page:ro"
+      - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib/python3.9/site-packages/omero_crm_landing_page:ro"
+      - "../omero_crm_landing_page/omero_crm_landing_page:/opt/omero/web/venv3/lib64/python3.9/site-packages/omero_crm_landing_page:ro"
       - "./config.omero:/opt/omero/web/config/config.omero:ro"
 
   nginx:
